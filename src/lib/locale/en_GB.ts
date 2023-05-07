@@ -22,6 +22,9 @@ export const en_GB: Dictionary = {
             tryAgain: "Try again",
             errorNoSupportedLanguage: "No supported language.",
             errorSomethingWentWrong: "Something went wrong."
+        },
+        confidence: {
+            error: "We couldn't detect the language."
         }
     }
 }

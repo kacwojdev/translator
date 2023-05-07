@@ -20,6 +20,9 @@ export type Dictionary = {
             tryAgain: string,
             errorNoSupportedLanguage: string,
             errorSomethingWentWrong: string
+        },
+        confidence: {
+            error: string
         }
     }
 }
