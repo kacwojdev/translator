@@ -9,14 +9,14 @@ export const Footer = () => {
     return (
         <FooterContainer>
             <AuthorContainer>
-                &copy; {T.footer.author} {currentYear}
+                &copy; {T.components.footer.author} {currentYear}
             </AuthorContainer>
             <LinkContainer>
                 <Link href={APP_CONFIG.FLATICON_URL}>
-                    {T.footer.flatIcon}
+                    {T.components.footer.flatIcon}
                 </Link>
                 <Link href={APP_CONFIG.LIBRETRANSLATE_URL}>
-                    {T.footer.libreTranslate}
+                    {T.components.footer.libreTranslate}
                 </Link>
             </LinkContainer>
         </FooterContainer>

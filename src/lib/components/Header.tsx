@@ -11,7 +11,7 @@ export const Header = () => {
             <LogoContainer>
                 <Logo src={Images.Logo}/>
                 <Title>
-                    {T.header.title}
+                    {T.components.header.title}
                 </Title>
             </LogoContainer>
             <LinkContainer>
@@ -19,7 +19,7 @@ export const Header = () => {
                     href={APP_CONFIG.GITHUB_URL}
                     target={"_blank"}
                 >
-                    {T.header.github}
+                    {T.components.header.github}
                 </Link>
             </LinkContainer>
         </HeaderContainer>
