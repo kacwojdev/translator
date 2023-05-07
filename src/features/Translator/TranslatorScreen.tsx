@@ -1,55 +1,33 @@
 import styled from 'styled-components'
 import {Confidence, ExchangeLanguage, Loader, SelectLanguage, TextCounter, TextInput} from 'lib/components'
-import React, {useState, useEffect} from "react";
-import {useSupportedLanguages} from "./useSupportedLanguages.ts";
-import { Language } from 'lib/models'
-import { Message } from "lib/components";
-import {useTranslations} from "../../lib/hooks";
+import React, {useState} from "react";
+import {Language, LanguageCode} from 'lib/models'
+import {SelectedLanguages} from "./types.ts";
 
-export const TranslatorScreen: React.FunctionComponent = () => {
-    const T = useTranslations()
-    const [languages, setLanguages] = useState<Array<Language>>()
-    const {loading, error, fetch: getSupportedLanguages } = useSupportedLanguages(
-        languages => console.log(languages)
-    )
-
-    useEffect(() => {
-        getSupportedLanguages()
-    }, [])
-
-    if (loading) {
-        return (
-            <Container>
-                <Loader />
-            </Container>
-        )
-    }
-
-    if (error) {
-        return (
-            <CenterContainer>
-                <Message
-                    withButton
-                    message={T.components.message.errorSomethingWentWrong}
-                    onClick={() => getSupportedLanguages()}
-                />
-            </CenterContainer>
-        )
-    }
-
-    if (languages?.length === 0) {
-        return (
-            <CenterContainer>
-                <Message message={T.components.message.errorNoSupportedLanguage} />
-            </CenterContainer>
-        )
-    }
+type TranslatorScreenProps = {
+    languages: Array<Language>
+}
+export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = ({
+    languages
+}) => {
+    const [selectedLanguages, setSelectedLanguages] = useState<SelectedLanguages>({
+        source: LanguageCode.Auto,
+        target: LanguageCode.English
+    })
 
     return (
         <Container>
             <TranslatorContainer>
                 <InputContainer>
-                    <SelectLanguage />
+                    <SelectLanguage
+                        languages={languages}
+                        exclude={[selectedLanguages.target]}
+                        onChange={newCode => setSelectedLanguages(prevState => ({
+                            ...prevState,
+                            source: newCode
+                        }))}
+                        selectedLanguage={selectedLanguages.source}
+                    />
                     <TextInput />
                     <LoaderContainer>
                         <Loader />
@@ -59,9 +37,23 @@ export const TranslatorScreen: React.FunctionComponent = () => {
                         <TextCounter />
                     </InputFooter>
                 </InputContainer>
-                <ExchangeLanguage />
+                <ExchangeLanguage
+                    hidden={selectedLanguages.source === LanguageCode.Auto}
+                    onClick={() => setSelectedLanguages(prevState => ({
+                        source: prevState.target,
+                        target: prevState.source
+                    }))}
+                />
                 <InputContainer>
-                    <SelectLanguage />
+                    <SelectLanguage
+                        languages={languages}
+                        exclude={[selectedLanguages.source, LanguageCode.Auto]}
+                        onChange={newCode => setSelectedLanguages(prevState => ({
+                            ...prevState,
+                            target: newCode
+                        }))}
+                        selectedLanguage={selectedLanguages.target}
+                    />
                     <TextInput />
                     <LoaderContainer>
                         <Loader />
@@ -102,8 +94,3 @@ const InputFooter = styled.div`
     justify-content: space-between;
 `
 
-const CenterContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`
