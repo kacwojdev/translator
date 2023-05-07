@@ -1,8 +1,41 @@
 import styled from "styled-components";
+import React, {useEffect} from "react";
+import {useTranslations} from "../hooks";
 
-export const TextInput = () => (
-    <Input placeholder={"Type text here..."} />
-)
+type TextInputProps = {
+    disabled?: boolean,
+    autoFocus?: boolean
+    value?: string,
+    onChangeText?(text: string): void
+}
+export const TextInput: React.FunctionComponent<TextInputProps> = ({
+    disabled,
+    autoFocus,
+    value,
+    onChangeText
+}) => {
+    const T = useTranslations()
+    const inputRef = React.createRef<HTMLTextAreaElement>()
+    useEffect(() => {
+        if (!disabled && autoFocus && inputRef.current) {
+            inputRef.current.focus()
+        }
+    }, [])
+
+    return (
+        <Input
+            ref={inputRef}
+            disabled={disabled}
+            placeholder={disabled ? T.app.disabledTranslatorPlaceholder : T.app.translatorPlaceholder}
+            value={value}
+            onChange={event => {
+                if (onChangeText) {
+                    onChangeText(event.target.value)
+                }
+            }}
+        />
+    )
+}
 
 const Input = styled.textarea`
     background-color: ${({theme}) => theme.colors.input};

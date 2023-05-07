@@ -1,4 +1,8 @@
 export type Dictionary = {
+    app: {
+        translatorPlaceholder: string,
+        disabledTranslatorPlaceholder: string
+    }
     common: {
         autoTranslate: string
     },

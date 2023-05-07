@@ -3,6 +3,7 @@ import {Confidence, ExchangeLanguage, Loader, SelectLanguage, TextCounter, TextI
 import React, {useState} from "react";
 import {Language, LanguageCode} from 'lib/models'
 import {SelectedLanguages} from "./types.ts";
+import {APP_CONFIG} from "../../lib/config";
 
 type TranslatorScreenProps = {
     languages: Array<Language>
@@ -14,6 +15,7 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = 
         source: LanguageCode.Auto,
         target: LanguageCode.English
     })
+    const [query, setQuery] = useState<string>('')
 
     return (
         <Container>
@@ -28,13 +30,24 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = 
                         }))}
                         selectedLanguage={selectedLanguages.source}
                     />
-                    <TextInput />
+                    <TextInput
+                        autoFocus
+                        value={query}
+                        onChangeText={newQuery => {
+                            if (newQuery.length <= APP_CONFIG.TEXT_INPUT_LIMIT) {
+                                setQuery(newQuery)
+                            }
+                        }}
+                    />
                     <LoaderContainer>
                         <Loader />
                     </LoaderContainer>
                     <InputFooter>
                         <Confidence />
-                        <TextCounter />
+                        <TextCounter
+                            counter={query.length}
+                            limit={APP_CONFIG.TEXT_INPUT_LIMIT}
+                        />
                     </InputFooter>
                 </InputContainer>
                 <ExchangeLanguage
@@ -54,7 +67,9 @@ export const TranslatorScreen: React.FunctionComponent<TranslatorScreenProps> = 
                         }))}
                         selectedLanguage={selectedLanguages.target}
                     />
-                    <TextInput />
+                    <TextInput
+                        disabled
+                    />
                     <LoaderContainer>
                         <Loader />
                     </LoaderContainer>

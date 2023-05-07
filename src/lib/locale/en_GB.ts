@@ -1,6 +1,10 @@
 import { Dictionary } from "lib/types";
 
 export const en_GB: Dictionary = {
+    app: {
+        translatorPlaceholder: 'Type text here ...',
+        disabledTranslatorPlaceholder: 'Translation will show up here ...'
+    },
     common: {
         autoTranslate: 'Auto Detect',
     },

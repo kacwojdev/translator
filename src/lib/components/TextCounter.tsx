@@ -1,8 +1,16 @@
 import styled from "styled-components";
+import React from "react";
 
-export const TextCounter = () => (
+type CounterProps = {
+    counter: number,
+    limit: number
+}
+export const TextCounter:React.FunctionComponent<CounterProps> = ({
+    counter,
+    limit
+}) => (
     <Counter>
-        0/5000
+        {counter}/{limit}
     </Counter>
 )
 
